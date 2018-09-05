@@ -1,5 +1,33 @@
 ﻿#include<stdlib.h>
 
+#define IsRoot(x)(!((x).parent))
+#define IsLChild(x)(!IsRoot(x)&&(&(x)==(x).parent->lChild))
+#define IsRChild(x)(!IsRoot(x)&&(&(x)==(x).parent->rChild))
+#define HasParent(x)(!IsRoot(x))
+#define HasLChild(x)((x).lChild)
+#define HasRChild(x)((x).rChild)
+#define HasChild(x)(HasLChild(x)||HasRChild(x))
+#define HasBothChild(x)(HasLChild(x)&&HasRChild(x))
+#define IsLeaf(x)(!HasChild(x))
+
+#define sibling(p)(\
+	IsLChild(*(p))?\
+		(p)->parent->rChild:\
+		(p)->parent->lChild\
+)
+
+#define uncle(x)(\
+	IsLChild(*((x)->parent))?\
+		(x)->parent->parent->rChild:\
+		(x)->parent->parent->lChild\
+)
+
+#define FromParentTo(x)(\
+	IsRoot(x)?_root:(\
+	IsLChild(x)?(x).parent->lChild:(x).parent->rChild\
+)\
+)
+
 #define BinNodePosi(T) BinNode<T>* //节点位置
 #define stature(p)((p)?(p)->height:-1) //节点亮度（与“空树高度为-1”的约定相统一）
 typedef enum { RB_RED, RB_BLACK } RBColor; //节点颜色
