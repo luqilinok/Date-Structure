@@ -1,4 +1,4 @@
-#include<stdlib.h>
+﻿#include<stdlib.h>
 
 #define BinNodePosi(T) BinNode<T>* //节点位置
 #define stature(p)((p)?(p)->height:-1) //节点亮度（与“空树高度为-1”的约定相统一）
@@ -8,7 +8,7 @@ template<typename T>struct BinNode
 {
 	T data;
 	BinNodePosi(T) parent;
-	BinNodePosi(T) iChild;
+	BinNodePosi(T) lChild;
 	BinNodePosi(T) rChild;
 
 	int height;
