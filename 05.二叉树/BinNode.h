@@ -49,7 +49,7 @@ template<typename T>struct BinNode
 	int size();
 	BinNodePosi(T) insertAsLC(T const&);
 	BinNodePosi(T) insertAsRC(T const&);
-	BinNodePosi(T) succ();
+	BinNodePosi(T) succ();  //定位节点
 	template<typename VST> void travLevel(VST&);
 	template<typename VST> void travPre(VST&);
 	template<typename VST> void travIn(VST&);
@@ -70,6 +70,30 @@ inline BinNodePosi(T) BinNode<T>::insertAsRC(T const &e)
 {
 	return rChild = new BinNode(e, this);
 }
+
+template<typename T>
+inline BinNodePosi(T) BinNode<T>::succ()  //定位节点v的直接后继
+{
+	BinNodePosi(T) s = this;
+	if (rChild)
+	{
+		s = rChild; while (HasLChild(*s))
+		{
+			s = s->lChild;
+		}
+	}
+	else
+	{
+		while (IsRChild(*s))
+		{
+			s = s->parent;
+		}
+		s = s->parent;
+	}
+	return s;
+}
+
+
 
 template<typename T>
 template<typename VST>

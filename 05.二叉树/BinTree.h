@@ -1,4 +1,5 @@
 #include"BinNode.h"
+#include"Stack.h"
 
 template<typename T>
 class BinTree
@@ -142,7 +143,7 @@ inline BinTree<T>* BinTree<T>::secede(BinNodePosi(T) x)
 }
 
 template<typename T,typename VST>
-void travPre_R(BinNodePosi(T) x, VST& visit)  //先序遍历
+void travPre_R(BinNodePosi(T) x, VST& visit)  //先序遍历（递归版）
 {
 	if (!x)
 	{
@@ -153,7 +154,7 @@ void travPre_R(BinNodePosi(T) x, VST& visit)  //先序遍历
 	travPre_R(x->rChild, visit);
 }
 
-template<typename T,typename VST>
+template<typename T,typename VST>   //中序遍历（递归版）
 void travIn_R(BinNodePosi(T) x, VST& visit)
 {
 	if (x)
@@ -166,7 +167,7 @@ void travIn_R(BinNodePosi(T) x, VST& visit)
 }
 
 template<typename T,typename VST>
-void travPost_R(BinNodePosi(T) x, VST& visit)  //后序遍历
+void travPost_R(BinNodePosi(T) x, VST& visit)  //后序遍历（递归版）
 {
 	if (!x)
 	{
@@ -177,4 +178,99 @@ void travPost_R(BinNodePosi(T) x, VST& visit)  //后序遍历
 	visit(x->data);
 }
 
+template<typename T,typename VST>  //二叉树先序遍历算法（迭代版1）
+void travPre_I1(BinNodePosi(T) x, VST& visit)
+{
+	Stack<BinNodePosi(T)> S;
+	if (x)
+	{
+		S.push(x);
+	}
+	while (!S.empty())
+	{
+		x = S.pop();
+		visit(x->data);
+		if (HasRChild(*x))
+		{
+			S.push(x->rChild);
+		}
+		if (HasLChild(*x))
+		{
+			S.push(x->lChild);
+		}
+	}
+}
 
+template<typename T,typename VST>   //二叉树先序遍历算法（迭代版2）
+static void visitAlongLeftBranch(BinNodePosi(T) x, VST& visit, Stack<BinNodePosi(T)>& S)
+{
+	while (x)
+	{
+		visit(x->data);
+		S.push(x->rChild);
+		x = x->lChild;
+	}
+}
+template<typename T,typename VST>
+void travPre_I2(BinNodePosi(T) x, VST& visit)
+{
+	Stack<BinNodePosi(T)> S;
+	while (true)
+	{
+		visitAlongLeftBranch(x, visit, S);
+		x = S.pop();
+	}
+}
+
+
+template<typename T>  //二叉树中序遍历（迭代版1）
+static void goAlongLeftBranch(BinNodePosi(T) x, Stack<BinNodePosi(T)>& S)
+{
+	while (x)
+	{
+		S.push(x);
+		x = x->lChild;
+	}
+}
+
+template<typename T,typename VST>   
+void traIn_I1(BinNodePosi(T) x, VST& visit)
+{
+	Stack<BinNodePosi(T)> S;
+	while (true)
+	{
+		goAlongLeftBranch(x, S);
+		if (S.empty())
+		{
+			break;
+		}
+		x = S.pop();
+		visit(x->data);
+		x = x->rChild;
+	}
+}
+
+
+template<typename T,typename VST>  //二叉树中序遍历（迭代版2）
+void traIn_I2(BinNodePosi(T) x, VST& visit)
+{
+	Stack<BinNodePosi(T)> S;
+	while (true)
+	{
+		if (x)
+		{
+			S.push(x);
+			x = x->lChild;
+		}
+		else if (!S.empty())
+		{
+			x = S.pop();
+			visit(x->data);
+			x = x->rChild;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
