@@ -141,5 +141,40 @@ inline BinTree<T>* BinTree<T>::secede(BinNodePosi(T) x)
 	return S;
 }
 
+template<typename T,typename VST>
+void travPre_R(BinNodePosi(T) x, VST& visit)  //先序遍历
+{
+	if (!x)
+	{
+		return;
+	}
+	visit(x->data);
+	travPre_R(x->lChild, visit);
+	travPre_R(x->rChild, visit);
+}
+
+template<typename T,typename VST>
+void travIn_R(BinNodePosi(T) x, VST& visit)
+{
+	if (x)
+	{
+		return;
+	}
+	travIn_R(x->lChild, visit);
+	visit(x->data);
+	travIn_R(x->rChild, visit);
+}
+
+template<typename T,typename VST>
+void travPost_R(BinNodePosi(T) x, VST& visit)  //后序遍历
+{
+	if (!x)
+	{
+		return;
+	}
+	travPost_R(x->lChild, visit);
+	travPost_R(x->rChild, visit);
+	visit(x->data);
+}
 
 
