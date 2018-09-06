@@ -1,4 +1,5 @@
 ﻿#include<stdlib.h>
+#include"Queue.h"
 
 #define IsRoot(x)(!((x).parent))
 #define IsLChild(x)(!IsRoot(x)&&(&(x)==(x).parent->lChild))
@@ -93,7 +94,26 @@ inline BinNodePosi(T) BinNode<T>::succ()  //定位节点v的直接后继
 	return s;
 }
 
-
+template<typename T>
+template<typename VST>
+inline void BinNode<T>::travLevel(VST &visit)
+{
+	Queue<BinNodePosi(T)> Q;
+	Q.enqueue(this);
+	while (!Q.empty())
+	{
+		BinNodePosi(T) x = Q.dequeue();
+		visit(x->data);
+		if (HasLChild(*x))
+		{
+			Q.enqueue(x->lChild);
+		}
+		if (HasRChild(*x))
+		{
+			Q.enqueue(x->rChild);
+		}
+	}
+}
 
 template<typename T>
 template<typename VST>
