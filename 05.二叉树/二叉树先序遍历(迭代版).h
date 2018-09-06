@@ -1,4 +1,4 @@
-template<typename T,typename VST>  //¶ş²æÊ÷ÏÈĞò±éÀúËã·¨£¨µü´ú°æ1£©
+template<typename T,typename VST>  //äºŒå‰æ ‘ç°éœ€éå†(è¿­ä»£ç‰ˆ1)
 void travPre_I1(BinNodePosi(T) x, VST& visit)
 {
 	Stack<BinNodePosi(T)> S;
@@ -23,7 +23,7 @@ void travPre_I1(BinNodePosi(T) x, VST& visit)
 
 
 
-template<typename T,typename VST>   //¶ş²æÊ÷ÏÈĞò±éÀúËã·¨£¨µü´ú°æ2£©
+template<typename T,typename VST>   //äºŒå‰æ ‘ç°éœ€éå†(è¿­ä»£ç‰ˆ2)
 static void visitAlongLeftBranch(BinNodePosi(T) x, VST& visit, Stack<BinNodePosi(T)>& S)
 {
 	while (x)

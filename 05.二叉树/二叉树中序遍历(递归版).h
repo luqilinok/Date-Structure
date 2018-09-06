@@ -1,4 +1,4 @@
-template<typename T,typename VST>   //ÖĞĞò±éÀú£¨µİ¹é°æ£©
+template<typename T,typename VST>   //äºŒå‰æ ‘ä¸­åºéå†é€’å½’ç‰ˆ
 void travIn_R(BinNodePosi(T) x, VST& visit)
 {
 	if (x)

@@ -1,4 +1,4 @@
-template<typename T,typename VST>   //¶ş²æÊ÷ÖĞĞò±éÀú£¨µü´ú°æ1£©
+template<typename T,typename VST>   //äºŒå‰æ ‘ä¸­åºéå†ï¼ˆè¿­ä»£ç‰ˆ1ï¼‰
 void traIn_I1(BinNodePosi(T) x, VST& visit)
 {
 	Stack<BinNodePosi(T)> S;
@@ -16,7 +16,7 @@ void traIn_I1(BinNodePosi(T) x, VST& visit)
 }
 
 
-template<typename T,typename VST>  //¶ş²æÊ÷ÖĞĞò±éÀú£¨µü´ú°æ2£©
+template<typename T,typename VST>  //äºŒå‰æ ‘ä¸­åºéå†ï¼ˆè¿­ä»£ç‰ˆ2ï¼‰
 void traIn_I2(BinNodePosi(T) x, VST& visit)
 {
 	Stack<BinNodePosi(T)> S;
@@ -36,6 +36,36 @@ void traIn_I2(BinNodePosi(T) x, VST& visit)
 		else
 		{
 			break;
+		}
+	}
+}
+
+template<typename T, typename VST>   //äºŒå‰æ ‘ä¸­åºéå†ï¼ˆè¿­ä»£ç‰ˆ3ï¼‰
+void travIn_I3(BinNodePosi(T) x, VST& visit)
+{
+	bool backtrack = false;
+	while (true)
+	{
+		if (!backtrack&&HasLChild(*x))
+		{
+			x = x->data;
+		}
+		else
+		{
+			visit(x->data);
+			if (HasRChild(*x))
+			{
+				x = x->rChild;
+				backtrack = false;
+			}
+			else
+			{
+				if (!(x = x->succ()))
+				{
+					break;
+				}
+				backtrack = true;
+			}
 		}
 	}
 }
