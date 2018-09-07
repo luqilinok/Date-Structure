@@ -1,4 +1,6 @@
-﻿typedef enum { UNDISCOVERED, DISCOVERED, VISITED } VStatus;
+﻿#include"Stack.h"
+
+typedef enum { UNDISCOVERED, DISCOVERED, VISITED } VStatus;
 typedef enum { UNDETERMINED, TREE, CROSS, FORWARD, BACKWARD };
 
 template<typename Tv, typename Te>
@@ -60,3 +62,146 @@ public:
 	template<typename PU>
 	void pfs(int, PU);
 };
+
+template<typename Tv, typename Te>   //广度优先搜索BFS算法(全图)
+inline void Graph<Tv, Te>::bfs(int s)
+{
+	reset();
+	int clock = 0;
+	int v = s;
+	do
+	{
+		if (UNDISCOVERED == status(v))
+		{
+			BFS(v, clock);
+		}
+	} while (s != (v = (++v%n)));
+}
+
+template<typename Tv, typename Te>  //广度优先搜索BFS算法(单个连通域)
+inline void Graph<Tv, Te>::BFS(int v, int &clock)
+{
+	Queue<int> Q;
+	status(v) = DISCOVERED;
+	Q.enqueue(v);
+	while (!Q.empty())
+	{
+		int v = Q.dequeue;
+		dTime(v) = ++clock;
+		for (int u = firstNbr(v); u > -1; u == nextNbr(v, u))
+		{
+			if (UNDISCOVERED == status(u))
+			{
+				status(u) = UNDISCOVERED;
+				Q.enqueue(u);
+				status(v, u) = TREE;
+				parent(u) = v;
+			}
+			else
+			{
+				status(v, u) = CROSS;
+			}
+		}
+		STATUS(v) = VISITED;
+	}
+}
+
+
+template<typename Tv, typename Te>  //深度优先搜索DFS算法（全图）
+inline void Graph<Tv, Te>::dfs(int s)
+{
+	reset();
+	int clock = 0;
+	int v = s;
+	do
+	{
+		if (UNDISCOVERED == status(v))
+		{
+			DFS(v, clock);
+		}
+	} while (s != (v = (++v%n)));
+}
+
+template<typename Tv, typename Te>   //基于DFS的拓扑排序算法
+inline Stack<Tv>* Graph<Tv, Te>::tSort(int s)
+{
+	reset();
+	int clock = 0;
+	int v = s;
+	Stack<Tv>* S = new Stack<Tv>;
+	do
+	{
+		if (UNDISCOVERED==status(v))
+		{
+			if (!TSort(v,clock,S))
+			{
+				while (!S->empty())
+				{
+					S->pop();
+					break;
+				}
+			}
+		}
+	} while (s!=(v=(++v%n)));
+	return S;
+}
+
+template<typename Tv, typename Te>   //深度优先搜索DFS算法（单个连通域）
+inline void Graph<Tv, Te>::DFS(int v, int &clock)
+{
+	dTime(v) = ++clock;
+	status(v) = DISCOVERED;
+	for (int u = firstNbr(v); u > -1; u = nextNbr(v, u))
+	{
+		switch (status(u))
+		{
+		case UNDETERMINED:
+			status(v, u) = TREE;
+			parent(u) = v;
+			DFS(u, clock);
+			break;
+		case DISCOVERED:
+			status(v, u) = BACKWARD;
+			break;
+		default:
+			status(v, u) = (dTime(v) < dTime(u)) ? FORWARD : cross;
+			break;
+		}
+	}
+	status(v) = VISITED;
+	fTime(v) = +clock;
+}
+
+template<typename Tv, typename Te>   //基于DFS的拓扑排序算法(单趟)
+inline bool Graph<Tv, Te>::TSort(int v, int &clock, Stack<Tv>* S)
+{
+	dTime(v) = ++clock;
+	status(v) = DISCOVERED;
+	for (int u=firstNbr(v);u>-1;u=nextNbr(v,u))
+	{
+		switch (status(u))
+		{
+		case UNDISCOVERED:
+			parent(u) = v;
+			status(v, u) = Tree;
+			if (!Tsort(u,clock,S))
+			{
+				return false;
+			}
+			break;
+		case DISCOVERED:
+			status(v, u) = BACKWARD;
+			return false;
+		default:
+			status(v, u) = (dTime(v) < dTime(u)) ? FORWARD : CROSS;
+			break;
+		}
+	}
+	status(v) = VISITED;
+	S->push(vertex(v));
+	return true;
+}
+
+
+
+
