@@ -29,7 +29,7 @@ private:
 	void BCC(int, int&, Stack<int>&);
 	bool TSort(int, int&, Stack<Tv>*);
 	template<typename PU>
-	void PFS(int PU);
+	void PFS(int PU);  //优先级搜索
 public:
 	int n;
 	virtual int insert(Tv const&) = 0;
@@ -122,6 +122,24 @@ inline void Graph<Tv, Te>::dfs(int s)
 	} while (s != (v = (++v%n)));
 }
 
+template<typename Tv, typename Te>
+inline void Graph<Tv, Te>::bcc(int s)
+{
+	reset();
+	int clock = 0;
+	int v = s;
+	Stack<int> S;
+	do
+	{
+		if (UNDISCOVERED==status(v))
+		{
+			BCC(v, clock, S);
+			S.pop();
+		}
+	} while (s!=(v=(++v%n)));
+
+}
+
 template<typename Tv, typename Te>   //基于DFS的拓扑排序算法
 inline Stack<Tv>* Graph<Tv, Te>::tSort(int s)
 {
@@ -171,6 +189,51 @@ inline void Graph<Tv, Te>::DFS(int v, int &clock)
 	status(v) = VISITED;
 	fTime(v) = +clock;
 }
+
+#define hca(x) (fTime(x))
+template<typename Tv, typename Te>
+inline void Graph<Tv, Te>::BCC(int v, int &clock, Stack<int>&S)
+{
+	hca(v) = dTime(v) = ++clock;
+	status(v) = DISCOVERED;
+	S.push(v);
+	for (int u = firstNbr(v); u > -1; u = nextNbr(v, u))
+	{
+		switch (status(u))
+		{
+		case UNDISCOVERED:
+			parent(u) = v;
+			status(v, u) = TREE;
+			BCC(u, clock, S);
+			if (hca(u)<dTime(v))
+			{
+				hca(v) = min(hca(v), hca(u));
+			}
+			else
+			{
+				while (v!=S.pop())
+				{
+					S.push(v);
+				}
+			}
+			break;
+		case DISCOVERED:
+			status(v, u) = BACKWARD;
+			if (u!=parent(v))
+			{
+				hac(v) = min(hca(v), dTime(u));
+				break;
+			}
+
+		default:
+			status(v, u) = (dTime(v) < dTime(u)) ? FORWARD : CROSS;
+			break;
+		}
+	}
+	status(v) = VISITED;
+}
+
+#undef hca
 
 template<typename Tv, typename Te>   //基于DFS的拓扑排序算法(单趟)
 inline bool Graph<Tv, Te>::TSort(int v, int &clock, Stack<Tv>* S)
