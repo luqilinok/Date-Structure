@@ -1,4 +1,4 @@
-template<typename Tv, typename Te>   //»ùÓÚDFSµÄÍØÆËÅÅĞòËã·¨
+ï»¿template<typename Tv, typename Te>   //åŸºäºDFSçš„æ‹“æ‰‘æ’åºç®—æ³•
 inline Stack<Tv>* Graph<Tv, Te>::tSort(int s)
 {
 	reset();
@@ -22,7 +22,7 @@ inline Stack<Tv>* Graph<Tv, Te>::tSort(int s)
 	return S;
 }
 
-template<typename Tv, typename Te>   //»ùÓÚDFSµÄÍØÆËÅÅĞòËã·¨(µ¥ÌË)
+template<typename Tv, typename Te>   //åŸºäºDFSçš„æ‹“æ‰‘æ’åºç®—æ³•(å•è¶Ÿ)
 inline bool Graph<Tv, Te>::TSort(int v, int &clock, Stack<Tv>* S)
 {
 	dTime(v) = ++clock;
