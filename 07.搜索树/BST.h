@@ -91,3 +91,72 @@ inline bool BST<T>::remove(const T & e)
 	updateHeightAbove(_hot);
 	return false;
 }
+
+template<typename T>
+BinNodePosi(T) BST<T>::connect34(
+	BinNodePosi(T) a, BinNodePosi(T) b, BinNodePosi(T) c,
+	BinNodePosi(T) T0, BinNodePosi(T) T1, BinNodePosi(T) T2, BinNodePosi(T) T3
+)
+{
+	a->lChild = T0;
+	if (T0)
+	{
+		T0->parent = a;
+	}
+	a->rChild = T1;
+	if (T1)
+	{
+		T1->parent = a;
+		updateHeight(a);
+	}
+	c->lChild = T2;
+	if (T2)
+	{
+		T2->parent = c;
+	}
+	c->rChild = T3;
+	if (T3)
+	{
+		T3->parent = c;
+		updateHeight(c);
+	}
+	b->lChild = a;
+	a->parent = b;
+	b->rChild = c;
+	c->parent = b;
+	updateHeight(b);
+	return b;
+}
+
+template<typename T>
+BinNodePosi(T) BST<T>::rotateAt(BinNodePosi(T) v)
+{
+	BinNodePosi(T) p = v->parent;
+	BinNodePosi(T) g = p->parent;
+	if (IsLChild(*p))
+	{
+		if (IsLChild(*v))
+		{
+			p->parent = g->parent;
+			return connect34(v, p, g, v->lChild, v->rChild, p->rChild, g->rChild);
+		}
+		else
+		{
+			v->parent = g->parent;
+			return connect34(p, v, g, v->lChild, v->rChild, g->rChild);
+		}
+	}
+	else
+	{
+		if (IsRChild(*v))
+		{
+			p->parent = g->parent;
+			return connect34(g, p, v, g->lChild, p->lChild, v->lChild, v->rChild);
+		}
+		else
+		{
+			v->parent = g->parent;
+			return connect34(g, v, p, g->lChild, v->lChild, v->rChild, p->rChild);
+		}
+	}
+}
