@@ -6,11 +6,11 @@
 
 
 template<typename T>
-class AVL :public BST<T>
+class AVL :public BST<T>  //基于BST实现AVL树
 {
 public:
-	BinNodePosi(T) insert(const T& e);
-	bool remove(const T& e);
+	BinNodePosi(T) insert(const T& e);  //插入
+	bool remove(const T& e);  //删除
 };
 
 
@@ -27,7 +27,7 @@ IsLChild(*(x))?(x)->lChild:(x)->rChild\
 )
 
 template<typename T>
-inline BinNodePosi(T) AVL<T>::insert(const T & e)
+inline BinNodePosi(T) AVL<T>::insert(const T & e)  //插入
 {
 	BinNodePosi(T)& x = search(e);
 	if (x)
@@ -53,7 +53,7 @@ inline BinNodePosi(T) AVL<T>::insert(const T & e)
 }
 
 template<typename T>
-inline bool AVL<T>::remove(const T & e)
+inline bool AVL<T>::remove(const T & e)  //删除
 {
 	BinNodePosi(T)& x = search(e);
 	if (!x)
