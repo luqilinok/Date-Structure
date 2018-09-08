@@ -4,7 +4,7 @@ template<typename T>
 class BST :public BinTree<T>
 {
 protected:
-	BinNodePosi(T) _hot;
+	BinNodePosi(T) _hot;  //命中节点的父亲
 	BinNodePosi(T) connect34(
 		BinNodePosi(T), BinNodePosi(T), BinNodePosi(T),
 		BinNodePosi(T), BinNodePosi(T), BinNodePosi(T), BinNodePosi(T));
@@ -18,7 +18,7 @@ public:
 template<typename T>
 static BinNodePosi(T) & searchIn(BinNodePosi(T)& v, const T& e, BinNodePosi(T)& hot)
 {
-	if (!v||(e==v->data))
+	if (!v || (e == v->data))
 	{
 		return v;
 	}
