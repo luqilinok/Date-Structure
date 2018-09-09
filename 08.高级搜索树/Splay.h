@@ -105,3 +105,92 @@ BinNodePosi(T) Splay<T>::splay(BinNodePosi(T) v)  //v是因最近访问而需要
 	v->parent = NULL;
 	return v;
 }
+
+template<typename T>
+inline BinNodePosi(T)& Splay<T>::search(const T & e)
+{
+	BinNodePosi(T) p = searchIn(_root, e, _hot = NULL);
+	_root = splay((p ? p : _hot));
+	return _root;
+}
+
+template<typename T>
+inline BinNodePosi(T) Splay<T>::insert(const T & e)
+{
+	if (!_root)
+	{
+		_size++;
+		return _root = new BinNode<T>(e);
+	}
+	if (e == search(e)->data)
+	{
+		return _root;
+	}
+	_size++;
+	BinNodePosi(T)t = _root;
+	if (_root->data < e)
+	{
+		t->parent = _root = new BinNode<T>(e, NULL, t, t->rChild);
+		if (HasRChild(*t))
+		{
+			t->rChild->parent = _root;
+			t->rChild = NULL;
+		}
+	}
+	else
+	{
+		t->parent = _root = new BinNode<T>(e, NULL, t->lChild, t);
+		if (HasLChild(*t))
+		{
+			t->lChild->parent = _root;
+			t->lChild = NULL;
+		}
+	}
+	updateHeightAbove(t);
+	return _root;
+}
+
+template<typename T>
+inline bool Splay<T>::remove(const T & e)
+{
+	if (!_root || (e != search(e)->data))
+	{
+		return false;
+	}
+	BinNodePosi(T) w = _root;
+	if (!HasLChild(*_root))
+	{
+		_root = _root->rChild;
+		if (_root)
+		{
+			_root->parent = NULL;
+		}
+		else if (!HasRChild(*root))
+		{
+			_root = _root->lChild;
+			if (_root)
+			{
+				_root->parent = NULL;
+			}
+		}
+	}
+	else
+	{
+		BinNodePosi(T) lTree = _root->lChild;
+		lTree->parent = NULL;
+		_root->lChild = NULL;
+		_root = _root->rChild;
+		_root->parent = NULL;
+		search(w->data);
+		_root->lChild = lTree;
+		lTree->parent = _root;
+	}
+	release(w->data);
+	release(w);
+	_size--;
+	if (_root)
+	{
+		updateHeight(_root);
+		return true;
+	}
+}
