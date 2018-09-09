@@ -191,6 +191,6 @@ inline bool Splay<T>::remove(const T & e)
 	if (_root)
 	{
 		updateHeight(_root);
-		return true;
 	}
+	return true;
 }
