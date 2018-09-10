@@ -46,7 +46,7 @@ inline BinNodePosi(T) BST<T>::insert(const T & e)
 	return x;
 }
 
-#include"BinTree.h"
+
 
 template<typename T>
 static BinNodePosi(T) removeAt(BinNodePosi(T)& x, BinNodePosi(T)& hot)
