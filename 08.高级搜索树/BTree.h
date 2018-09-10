@@ -156,7 +156,7 @@ void BTree<T>::solveUnderflow(BTNodePosi(T) v)
 		{
 			v->key.insert(0, p->key[r - 1]);
 			p->key[r - 1] = ls->key.remove(ls->key.size() - 1);
-			v->child.insert(-, ls->child.remove(ls->child.size() - 1));
+			v->child.insert(0, ls->child.remove(ls->child.size() - 1));
 			if (v->child[0])
 			{
 				v->child[0]->parent = v;
@@ -212,6 +212,7 @@ void BTree<T>::solveUnderflow(BTNodePosi(T) v)
 			while (!v->key.empty())
 			{
 				rs->key.insert(0, v->key.remove(v->key.size() - 1));
+				rs->child.insert(0, v->child.remove(v->child.size() - 1));
 				if (rs->child[0])
 				{
 					rs->child[0]->parent = rs;
