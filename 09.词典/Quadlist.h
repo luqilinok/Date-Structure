@@ -50,37 +50,23 @@ void Quadlist<T>::init()
     _size = 0;
 }
 
-template<typename K,typename V>
-V* Skiplist<K,V>::get(K k)
+template<typename T>
+T Quadlist<T>::remove(QlistNodePosi(T) p)
 {
-    if(empty())
-    {
-        return NULL;
-    }
-    ListNode<Quadlist<Entry<K,V>>*>* qlist=first();
-    QuadlistNode<Entry<K,V>>* p=qlist->data->first();
-    return skipSearch(qlist,p,k)?&(p->entry.value):NULL;
+    p->pred->succ=p->succ;
+    p->succ->pred=p->pred;
+    _size--;
+    T e=p->entry;
+    return e;
 }
 
-template<typename K,typename V>
-bool Skiplist<K,V>::skipSearch(ListNode<Quadlist<Entry<K,V>>*>* &qlist,QuadlistNode<Entry<K,V>>* &p,K& k)
+template<typename T>
+int Quadlist<T>::clear()
 {
-    while(true)
+    int oldSize=_size;
+    while(_size>0)
     {
-        while(p->succ&&(p->entry.key<=k))
-        {
-            p=p->succ;
-        }
-        p=p->pred;
-        if(p->pred&&(k==p->entry.key))
-        {
-            return true;
-        }
-        qlist=qlist->succ;
-        if(!qlist->succ)
-        {
-            return false;
-        }
-        p=(p->pred)?p->below:qlist->data->first();
+        remove(header->succ);
     }
+    return oldSize;
 }
