@@ -35,3 +35,41 @@ Hashtable<K,V>::Hashtable(int c)
     memeset(ht,0,sizeof(Entry<K,V>*)*M);
     lazyRemovel=new Bitmap(M);
 }
+
+int primeNLT(int c,int n,char* file)
+{
+    Bitmap B(file,n);
+    while(c<n)
+    {
+        if(B.test(c))
+        {
+            c++;
+        }
+        else
+        {
+            return c;
+        }
+        return c;
+    }
+}
+
+template<typename K,typename V>
+Hashtable<K,V>::~Hashtable()
+{
+    for(int i=0;i<M;i++)
+    {
+        if(ht[i])
+        {
+            release(ht[i]);
+        }
+        release(ht);
+        release(lazyRemoval);
+    }
+}
+
+template<typename K,typename V>
+V* Hashtable<K,V>::get(K k)
+{
+    int r=probe4Hit(k);
+    return ht[r]?&(ht[r]->value):NULL;
+}
