@@ -24,3 +24,14 @@ class Hashtable : public Dictionary<K, V>
     V* get(K k);
     bool remove(K k);
 };
+
+
+template<typename K,typename V>
+Hashtable<K,V>::Hashtable(int c)
+{
+    M=primeNLT(c,1048576,"prime-1048576-bitmap.txt");
+    N=0;
+    ht=new Entry<K,V>*[M];
+    memeset(ht,0,sizeof(Entry<K,V>*)*M);
+    lazyRemovel=new Bitmap(M);
+}
