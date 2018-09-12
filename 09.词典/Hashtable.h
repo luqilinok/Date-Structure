@@ -73,3 +73,28 @@ V* Hashtable<K,V>::get(K k)
     int r=probe4Hit(k);
     return ht[r]?&(ht[r]->value):NULL;
 }
+
+template<typename K,typename V>
+int Hashtable<K,V>::probe4Hit(const K& k)
+{
+    int r=hashCode(k)%M;
+    while((ht[r]&&(k!=ht[r]->key))||(!ht(r)&&lazilyRemoved(r)))
+    r=(r+1)%M;
+    return r;
+}
+
+
+template<typename K,typename V>
+bool Hashtable<K,V>::remove(K k)
+{
+    int r=probe4Hit(k);
+    if(!ht(r))
+    {
+        return false;
+    }
+    release(ht[r]);
+    ht[r]=NULL;
+    markAsRemoved(r);
+    N--;
+    return true;
+}
