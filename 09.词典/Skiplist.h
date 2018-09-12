@@ -51,3 +51,46 @@ bool Skiplist<K,V>::skipSearch(ListNode<Quadlist<Entry<K,V>>*>* &qlist,QuadlistN
         p=(p->pred)?p->below:qlist->data->first();
     }
 }
+
+
+template<typename K,typename V>
+bool Skiplist<K,V>::put(K k,V v)
+{
+    Entry<K,V> e=Entry<K,V>(k,v);
+    if(empty())
+    {
+        insertAsFirst(new Quadlist<Entry<K,V>>);
+        ListNode<Quadlist<Entry<K,V>>*>* qlist=first();
+        QuadlistNode<Entry<K,V>>* p=qlist->data->first();
+        if(skipSearch(qlist,p,k))
+        {
+            while(p->below)
+            {
+                p=p->below;
+            }
+        }
+        qlist=last();
+        QuadlistNode<Entry<K,V>>* b=qlist->data->insertAfterAbove(e,q);
+        while(rand()&1)
+        {
+            while(qlist->data->valid(p)&&!p->above) p=p->pred;
+            {
+                if(!qlist->data->valid(p))
+                {
+                    if(qlist==first())
+                    {
+                        insertAsfirst(new Quadlist<Entry<K,V>>);
+                    }
+                    p=qlist->pred->data->first()->pred;
+                }
+                else
+                {
+                    p=p->above;
+                }
+                qlist=qlist->pred;
+                b=qlist->data->insertAfterAbove(e,p,b);
+            }
+        }
+        return true;
+    }
+}
