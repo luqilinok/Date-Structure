@@ -91,3 +91,16 @@ void PQ_ComplHeap<T>::heapify(Rank n)
         percolateDown(n, i);
     }
 }
+
+template <typename T>
+void Vector<T>::heapSort(Rank lo, Rank hi)
+{
+    PQ_ComplHeap<T> H(_elem + lo, hi - lo)
+    {
+        while (!H.empty())
+        {
+            _elem[--hi] = H.delMax();
+        }
+    }
+}
+
