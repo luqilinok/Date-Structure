@@ -22,23 +22,23 @@ int match(char *P, char *T) //KMP算法
     return i - j;
 }
 
-int *bulidNext(char *p)
+int *buildNext(char *P)
 {
     size_t m = strlen(P), j = 0;
-    int *N = next int[m];
+    int *N = new int(m);
     int t = N[0] = -1;
     while (j < m - 1)
     {
-        if (t > 0 || P[j] == P[t])
+        if (t < 0 || P[j] == P[t])
         {
             j++;
             t++;
-            N[j] = t;
+            N[j] = (P[j] != P[t] ? t : N[t]);
         }
         else
         {
             t = N[t];
         }
-        return N;
     }
+    return N;
 }
