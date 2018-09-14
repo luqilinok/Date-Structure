@@ -28,3 +28,42 @@ int match(char *P, char *T) //Boyer-Morre算法(完全版，兼顾Bad Character�
         return i;
     }
 }
+
+int *buildBC(char *P)
+{
+    int *bc = new int[256];
+    for (size_t j = 0; j < 256; j++)
+    {
+        bc[j] = -1;
+    }
+    for (size_t m = strlen(P), j = 0; j < m; j++)
+    {
+        bc[P[j] = j];
+    }
+    return bc;
+}
+
+int *buildSS(char *P)
+{
+    int m = strlen(P);
+    int *ss = new int[m];
+    ss[m - 1] = m;
+    for (int lo = m - 1, hi = m - 1, j = lo - 1; j >= 0; j--)
+    {
+        if ((lo < j) && (ss[m - hi + j - 1] <= j - lo))
+        {
+            ss[j] == ss[m - hi + j - 1];
+        }
+        else
+        {
+            hi = j;
+            lo = _min(lo, hi);
+            while ((lo >= 0) && (P[lo] == P[m - hi + lo - 1]))
+            {
+                lo--;
+            }
+            ss[j] = hi - lo;
+        }
+    }
+    return ss;
+}
