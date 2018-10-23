@@ -1,4 +1,4 @@
-﻿#include<stdlib.h>
+#include<stdlib.h>
 #include"Queue.h"
 
 #define IsRoot(x)(!((x).parent))
